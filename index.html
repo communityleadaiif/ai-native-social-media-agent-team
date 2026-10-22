@@ -2,11 +2,1266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/board/index.html">
-  <title>AI-Native Social Media Agent Team</title>
-  <script>window.location.replace("/board/index.html");</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Native Social Media Agent Team · Mission Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090b10;
+      --bg-surface: #0f131d;
+      --bg-card: rgba(19, 25, 39, 0.75);
+      --bg-card-hover: rgba(28, 36, 56, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.4);
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 60%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Ambient animated grid */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 24px 28px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 28px;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .logo-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-emerald);
+    }
+
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Pipeline Step Tracker */
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pipeline-container {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      position: relative;
+    }
+
+    .pipeline-step {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-step.active {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .pipeline-step.completed {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .pipeline-step.active .step-num {
+      color: var(--primary);
+    }
+
+    .pipeline-step.completed .step-num {
+      color: var(--accent-emerald);
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Main Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-steps {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pipeline-steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Departments 8-Pack Grid */
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .dept-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dept-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .dept-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .dept-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dept-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .dept-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .dept-agent-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-cyan);
+    }
+
+    .dept-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    .dept-card.busy .dept-status {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .dept-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .tool-pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text-muted);
+    }
+
+    .dept-preview {
+      font-size: 12px;
+      color: #cbd5e1;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      border-left: 2px solid var(--primary);
+    }
+
+    /* Right Sidebar: Owner Levers & Two Gates */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .owner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .gate-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .gate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .gate-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dial-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .dial-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 4px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .dial-val {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .dial-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Budget Progress Bar */
+    .budget-bar-wrap {
+      margin-top: 10px;
+    }
+
+    .budget-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 56.8%;
+      background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan));
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    /* Owner Queue Table */
+    .queue-item {
+      background: rgba(244, 63, 94, 0.05);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .queue-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--accent-rose);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .queue-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .queue-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 11px;
+      border-radius: 8px;
+    }
+
+    .btn-approve {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-approve:hover {
+      background: rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-hold {
+      background: rgba(244, 63, 94, 0.2);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .btn-hold:hover {
+      background: rgba(244, 63, 94, 0.35);
+    }
+
+    /* Interrupt Playbook Row */
+    .interrupts-row {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .interrupts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 1024px) {
+      .interrupts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .interrupt-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .interrupt-btn:hover {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .interrupt-cmd {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .interrupt-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* Live Activity Console */
+    .console-panel {
+      background: #080a0f;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .console-title {
+      color: var(--text-muted);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .console-logs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 12px;
+      line-height: 1.6;
+    }
+
+    .log-time {
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    .log-tag {
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .log-tag.orc { color: var(--primary); }
+    .log-tag.content { color: var(--accent-cyan); }
+    .log-tag.gate { color: var(--accent-amber); }
+    .log-tag.pub { color: var(--accent-emerald); }
+    .log-tag.warn { color: var(--accent-rose); }
+
+    .log-msg {
+      color: #cbd5e1;
+    }
+
+    /* Modal / Alert Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e1b4b;
+      border: 1px solid var(--primary);
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body style="background:#090b10; color:#f8fafc; font-family:'Plus Jakarta Sans', system-ui, sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
-  <p>Loading AI-Native Social Media Team Mission Control...</p>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="container">
+    <!-- Top Header Navigation -->
+    <header>
+      <div class="brand-wrap">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AI-Native Social Media Agent Team</h1>
+          <p>1 Orchestrator · 8 Departments · 8 Interrupt Playbooks · Shared Brand OS · 1 Owner</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-badge">
+          <div class="status-pulse"></div>
+          <span>Loop Operational</span>
+        </div>
+        <button class="btn btn-primary" id="btnRunPipeline" onclick="runOrchestratorPipeline()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Run on Today's Signals
+        </button>
+      </div>
+    </header>
+
+    <!-- Pipeline Step Visualizer -->
+    <div class="pipeline-container">
+      <div class="section-title">
+        <span>03 · Orchestrator Pipeline Flow</span>
+        <span style="color: var(--primary); margin-left: auto; font-family: var(--font-mono); font-size: 11px;">"Collects → Scores → Briefs → Drafts → Schedules → Approves"</span>
+      </div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step" id="step-1">
+          <div class="step-num">STEP 01</div>
+          <div class="step-title">Collects</div>
+          <div class="step-desc">Reads signals from GSC, Semrush, Brand24 & loop feedback.</div>
+        </div>
+        <div class="pipeline-step" id="step-2">
+          <div class="step-num">STEP 02</div>
+          <div class="step-title">Scores</div>
+          <div class="step-desc">Evaluates intent, reach potential & resonance against playbook.</div>
+        </div>
+        <div class="pipeline-step" id="step-3">
+          <div class="step-num">STEP 03</div>
+          <div class="step-title">Briefs</div>
+          <div class="step-desc">Writes brief and tasks the responsible department.</div>
+        </div>
+        <div class="pipeline-step" id="step-4">
+          <div class="step-num">STEP 04</div>
+          <div class="step-title">Drafts</div>
+          <div class="step-desc">Content Engine drafts copy, Creative Studio renders media.</div>
+        </div>
+        <div class="pipeline-step" id="step-5">
+          <div class="step-num">STEP 05</div>
+          <div class="step-title">Schedules</div>
+          <div class="step-desc">Publishing & Social assigns peak engagement calendar slot.</div>
+        </div>
+        <div class="pipeline-step" id="step-6">
+          <div class="step-num">STEP 06</div>
+          <div class="step-title">Approves</div>
+          <div class="step-desc">Runs Brand Voice & Budget Cap gates. Dispatches or queues.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace Grid -->
+    <div class="dashboard-grid">
+      <!-- Left: The 8 Departments -->
+      <div>
+        <div class="section-title">The 8 Departments & Agent Mesh</div>
+        <div class="departments-grid">
+          <!-- 1. Search Visibility -->
+          <div class="dept-card" id="card-search-visibility">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">🔍</div>
+                <div>
+                  <div class="dept-name">Search Visibility</div>
+                  <div class="dept-agent-tag">`search-visibility`</div>
+                </div>
+              </div>
+              <div class="dept-status">Monitoring</div>
+            </div>
+            <div class="dept-preview">Signal: Keyword <strong>"barrier repair routine"</strong> jumped +340% search volume this week.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">GSC</span>
+              <span class="tool-pill">Semrush</span>
+              <span class="tool-pill">GA4</span>
+              <span class="tool-pill">Ahrefs</span>
+            </div>
+          </div>
+
+          <!-- 2. Market Radar -->
+          <div class="dept-card" id="card-market-radar">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">📡</div>
+                <div>
+                  <div class="dept-name">Market Radar</div>
+                  <div class="dept-agent-tag">`market-radar`</div>
+                </div>
+              </div>
+              <div class="dept-status">Active</div>
+            </div>
+            <div class="dept-preview">Competitor Watch: Rival launched 20% discount on anti-aging serums. No response needed.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">Brand24</span>
+              <span class="tool-pill">Similarweb</span>
+              <span class="tool-pill">Google Alerts</span>
+            </div>
+          </div>
+
+          <!-- 3. Content Engine -->
+          <div class="dept-card" id="card-content-engine">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">✍️</div>
+                <div>
+                  <div class="dept-name">Content Engine</div>
+                  <div class="dept-agent-tag">`content-engine`</div>
+                </div>
+              </div>
+              <div class="dept-status">Ready</div>
+            </div>
+            <div class="dept-preview">Brief ready: "The 3 Skincare Essentials You Actually Need" · SEO Score 94/100.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">Claude</span>
+              <span class="tool-pill">Surfer SEO</span>
+              <span class="tool-pill">Frase</span>
+              <span class="tool-pill">Airtable</span>
+            </div>
+          </div>
+
+          <!-- 4. Creative Studio -->
+          <div class="dept-card" id="card-creative-studio">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">🎨</div>
+                <div>
+                  <div class="dept-name">Creative Studio</div>
+                  <div class="dept-agent-tag">`creative-studio`</div>
+                </div>
+              </div>
+              <div class="dept-status">Standby</div>
+            </div>
+            <div class="dept-preview">Assets: 4-slide minimalist carousel layout prepared in Figma brand kit palette.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">Canva</span>
+              <span class="tool-pill">Midjourney</span>
+              <span class="tool-pill">Figma</span>
+              <span class="tool-pill">ElevenLabs</span>
+            </div>
+          </div>
+
+          <!-- 5. Publishing & Social -->
+          <div class="dept-card" id="card-publishing-social">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">🚀</div>
+                <div>
+                  <div class="dept-name">Publishing & Social</div>
+                  <div class="dept-agent-tag">`publishing-social`</div>
+                </div>
+              </div>
+              <div class="dept-status">Queued</div>
+            </div>
+            <div class="dept-preview">Next scheduled release: Instagram & LinkedIn at 18:30 (peak engagement window).</div>
+            <div class="dept-tools">
+              <span class="tool-pill">Metricool</span>
+              <span class="tool-pill">WordPress</span>
+              <span class="tool-pill">Meta API</span>
+              <span class="tool-pill">TikTok</span>
+            </div>
+          </div>
+
+          <!-- 6. Reviews & Reputation -->
+          <div class="dept-card" id="card-reviews-reputation">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">⭐</div>
+                <div>
+                  <div class="dept-name">Reviews & Reputation</div>
+                  <div class="dept-agent-tag">`reviews-reputation`</div>
+                </div>
+              </div>
+              <div class="dept-status">4.9 ★</div>
+            </div>
+            <div class="dept-preview">Sentiment Score: 98% Positive across 142 Google & NiceJob reviews.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">GBP Reviews</span>
+              <span class="tool-pill">Podium</span>
+              <span class="tool-pill">NiceJob</span>
+            </div>
+          </div>
+
+          <!-- 7. Leads & Conversations -->
+          <div class="dept-card" id="card-leads-conversations">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">💬</div>
+                <div>
+                  <div class="dept-name">Leads & Conversations</div>
+                  <div class="dept-agent-tag">`leads-conversations`</div>
+                </div>
+              </div>
+              <div class="dept-status">Listening</div>
+            </div>
+            <div class="dept-preview">Conversations: 18 incoming DMs handled today · 3 consultations booked via Calendly.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">HubSpot</span>
+              <span class="tool-pill">IG Direct</span>
+              <span class="tool-pill">WhatsApp</span>
+              <span class="tool-pill">Calendly</span>
+            </div>
+          </div>
+
+          <!-- 8. Results & ROI -->
+          <div class="dept-card" id="card-results-roi">
+            <div class="dept-header">
+              <div class="dept-meta">
+                <div class="dept-icon">📊</div>
+                <div>
+                  <div class="dept-name">Results & ROI</div>
+                  <div class="dept-agent-tag">`results-roi`</div>
+                </div>
+              </div>
+              <div class="dept-status">Loop Fed</div>
+            </div>
+            <div class="dept-preview">Loop Return: Weekly CTR 4.6% (+1.2% over benchmark) · Logs fed into 01 SIGNALS.</div>
+            <div class="dept-tools">
+              <span class="tool-pill">Looker</span>
+              <span class="tool-pill">BigQuery</span>
+              <span class="tool-pill">Metabase</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Owner Levers & The Two Gates -->
+      <div class="sidebar">
+        <!-- The Owner's Levers -->
+        <div class="glass-panel">
+          <div class="owner-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Human-Led · 1 Owner
+          </div>
+          <h2 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">The Two Gates & Levers</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+            "Checks the voice, checks the budget. Routine content ships end to end. Only budget changes and edge cases reach the owner."
+          </p>
+
+          <!-- Gate 1: Brand Voice -->
+          <div class="gate-card">
+            <div class="gate-header">
+              <span class="gate-title">
+                <span>🛡️ Gate 1: Brand Voice</span>
+              </span>
+              <span style="font-size: 11px; font-weight: 700; color: var(--accent-emerald);">MATCH 94%</span>
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted);">Saved in <code>owner/brand-voice.md</code></p>
+            <div class="dial-grid">
+              <div class="dial-item">
+                <div class="dial-val">92</div>
+                <div class="dial-label">Warmth</div>
+              </div>
+              <div class="dial-item">
+                <div class="dial-val">84</div>
+                <div class="dial-label">Confidence</div>
+              </div>
+              <div class="dial-item">
+                <div class="dial-val">61</div>
+                <div class="dial-label">Playful</div>
+              </div>
+              <div class="dial-item">
+                <div class="dial-val">28</div>
+                <div class="dial-label">Formal</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gate 2: Budget Cap -->
+          <div class="gate-card">
+            <div class="gate-header">
+              <span class="gate-title">
+                <span>💰 Gate 2: Budget Cap</span>
+              </span>
+              <span style="font-size: 11px; font-weight: 700; color: var(--accent-cyan);">56.8% USED</span>
+            </div>
+            <div class="budget-bar-wrap">
+              <div class="budget-labels">
+                <span style="color: var(--text-muted);">$1,420 spent</span>
+                <span style="color: var(--text-dim);">$2,500 cap</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="budgetProgress"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Needs Your OK Queue -->
+          <div style="margin-top: 18px;">
+            <div class="section-title" style="margin-bottom: 10px;">
+              <span>queue/needs-your-ok.md</span>
+              <span style="color: var(--accent-rose); margin-left: auto;">1 PENDING</span>
+            </div>
+
+            <div class="queue-item" id="queueItem1">
+              <div class="queue-meta">
+                <span>EDGE CASE · COMPETITOR PROMO</span>
+                <span>TODAY</span>
+              </div>
+              <div class="queue-title">Competitor 25% Flash Sale Counter-Offer</div>
+              <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
+                Drafted a "Why Quality Beats Flash Discounts" editorial response. Requires owner sign-off before publishing.
+              </p>
+              <div class="queue-actions">
+                <button class="btn btn-sm btn-approve" onclick="approveQueueItem('queueItem1')">✓ Approve</button>
+                <button class="btn btn-sm btn-hold" onclick="holdQueueItem('queueItem1')">✕ Hold</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interrupt Playbooks (The 8 Events that break into the loop) -->
+    <div class="interrupts-row">
+      <div class="section-title">
+        <span>⚡ Interrupt Playbooks (What breaks into the loop)</span>
+        <span style="margin-left: auto; color: var(--text-dim);">8 slash commands in <code>.claude/commands/</code></span>
+      </div>
+      <div class="interrupts-grid">
+        <button class="interrupt-btn" onclick="triggerInterrupt('/search-demand-spikes', 'glass skin routine +340%')">
+          <span class="interrupt-cmd">/search-demand-spikes</span>
+          <span class="interrupt-label">Search volume spikes +340%</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/competitor-drops-a-promo', 'GlowCo flash sale 25% off')">
+          <span class="interrupt-cmd">/competitor-drops-a-promo</span>
+          <span class="interrupt-label">Competitor drops aggressive promo</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/one-star-review-lands', 'Packaging damaged on arrival')">
+          <span class="interrupt-cmd">/one-star-review-lands</span>
+          <span class="interrupt-label">1-Star review needs response</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/content-calendar-looks-thin', 'Only 2 scheduled posts left')">
+          <span class="interrupt-cmd">/content-calendar-looks-thin</span>
+          <span class="interrupt-label">Content calendar running low</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/a-post-goes-viral', 'Instagram Reel reaches 50K views')">
+          <span class="interrupt-cmd">/a-post-goes-viral</span>
+          <span class="interrupt-label">Post velocity jumps 5x</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/ranking-drops-a-page', 'Target keyword drops #3 to #11')">
+          <span class="interrupt-cmd">/ranking-drops-a-page</span>
+          <span class="interrupt-label">High-intent keyword drops</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/ad-creative-fatigues', 'Ad Set #3 CTR dropped 42%')">
+          <span class="interrupt-cmd">/ad-creative-fatigues</span>
+          <span class="interrupt-label">Ad fatigue triggers creative refresh</span>
+        </button>
+
+        <button class="interrupt-btn" onclick="triggerInterrupt('/dm-lead-at-11pm', 'Late night DM asking for custom plan')">
+          <span class="interrupt-cmd">/dm-lead-at-11pm</span>
+          <span class="interrupt-label">After-hours high-intent lead</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live System Console -->
+    <div class="console-panel">
+      <div class="console-header">
+        <div class="console-title">
+          <span style="display:inline-block; width:8px; height:8px; background:var(--accent-emerald); border-radius:50%;"></span>
+          <span>Orchestrator Execution Stream</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="clearLogs()">Clear Console</button>
+      </div>
+      <div class="console-logs" id="consoleLogs">
+        <div class="log-line">
+          <span class="log-time">[17:45:00]</span>
+          <span class="log-tag orc">[ORCHESTRATOR]</span>
+          <span class="log-msg">System initialized. Connected to 8 departments. Brand voice and budget cap loaded.</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[17:45:02]</span>
+          <span class="log-tag gate">[GATES]</span>
+          <span class="log-msg">Voice dial profile verified: Warmth 92, Confidence 84, Playfulness 61, Formality 28.</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[17:45:03]</span>
+          <span class="log-tag pub">[LOOP]</span>
+          <span class="log-msg">Loop return active: reading results.md. Next scheduled cycle waiting.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span id="toastMsg">Action executed</span>
+  </div>
+
+  <script>
+    // Audio synthesizer for tech clicks
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 600, duration = 0.05) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function addLog(tag, type, msg) {
+      const logs = document.getElementById('consoleLogs');
+      const timeStr = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'log-line';
+      div.innerHTML = `
+        <span class="log-time">[${timeStr}]</span>
+        <span class="log-tag ${type}">[${tag}]</span>
+        <span class="log-msg">${msg}</span>
+      `;
+      logs.appendChild(div);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function clearLogs() {
+      document.getElementById('consoleLogs').innerHTML = '';
+      addLog('SYSTEM', 'orc', 'Console cleared.');
+    }
+
+    // Step animation runner for the 6-step pipeline
+    async function runOrchestratorPipeline() {
+      playBeep(440, 0.08);
+      const btn = document.getElementById('btnRunPipeline');
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+
+      const steps = [
+        { id: 'step-1', tag: 'COLLECTS', type: 'orc', msg: 'Gathering new signals from Search Visibility (GSC) and Market Radar (Brand24)...' },
+        { id: 'step-2', tag: 'SCORES', type: 'orc', msg: 'Scored "Skin Barrier Repair" surge at 94/100 · High priority evergreen opportunity.' },
+        { id: 'step-3', tag: 'BRIEFS', type: 'orc', msg: 'Generated brief: Handed to Content Engine and Creative Studio.' },
+        { id: 'step-4', tag: 'DRAFTS', type: 'content', msg: 'Content Engine completed draft · Surfer SEO score: 94 · Creative Studio prepared 4-slide carousel.' },
+        { id: 'step-5', tag: 'SCHEDULES', type: 'pub', msg: 'Publishing & Social allocated slot: Today at 18:30 on Instagram & LinkedIn.' },
+        { id: 'step-6', tag: 'APPROVES', type: 'gate', msg: 'Gates checked: Voice Match 96% (Friendly, no hype), Budget spend $0. Auto-approved!' }
+      ];
+
+      for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        const el = document.getElementById(s.id);
+        el.classList.add('active');
+        playBeep(520 + (i * 60), 0.06);
+        addLog(s.tag, s.type, s.msg);
+        await new Promise(r => setTimeout(r, 650));
+        el.classList.remove('active');
+        el.classList.add('completed');
+      }
+
+      addLog('RESULTS', 'pub', 'Post added to publishing queue · Appended entry to logs/results.md');
+      showToast('Orchestrator Pipeline run complete! Routine post approved and scheduled.');
+      playBeep(880, 0.12);
+
+      setTimeout(() => {
+        steps.forEach(s => {
+          document.getElementById(s.id).classList.remove('completed');
+        });
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }, 4000);
+    }
+
+    // Trigger an interrupt playbook
+    async function triggerInterrupt(cmd, arg) {
+      playBeep(650, 0.08);
+      addLog('INTERRUPT', 'warn', `Triggered ${cmd} "${arg}"`);
+      addLog('ORCHESTRATOR', 'orc', `Interrupt intercepted. Pausing standard loop to process event.`);
+
+      if (cmd === '/competitor-drops-a-promo' || cmd === '/one-star-review-lands') {
+        addLog('GATE', 'gate', `Item classified as edge case / promise: Routed to queue/needs-your-ok.md with Hold/Approve.`);
+        showToast(`Interrupt handled: Escalated to Owner in queue/needs-your-ok.md`);
+      } else {
+        addLog('DEPARTMENTS', 'content', `Tasked relevant departments. Running voice and budget checks...`);
+        addLog('APPROVES', 'gate', `Gates cleared. Solution executed without requiring owner overhead.`);
+        showToast(`Interrupt handled: ${cmd} executed successfully!`);
+      }
+    }
+
+    function approveQueueItem(id) {
+      playBeep(750, 0.08);
+      const item = document.getElementById(id);
+      if (item) {
+        item.style.transition = 'all 0.3s ease';
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(30px)';
+        setTimeout(() => {
+          item.remove();
+          addLog('OWNER', 'gate', `Owner approved item. Dispatched to Publishing & Social for immediate release.`);
+          showToast('Item approved and published!');
+        }, 300);
+      }
+    }
+
+    function holdQueueItem(id) {
+      playBeep(350, 0.08);
+      const item = document.getElementById(id);
+      if (item) {
+        item.style.background = 'rgba(255, 255, 255, 0.02)';
+        item.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        item.querySelector('.queue-actions').innerHTML = '<span style="font-size:11px; color:var(--text-dim); font-weight:600;">Status: On Hold by Owner</span>';
+        addLog('OWNER', 'warn', `Owner marked item on HOLD. Logged in queue/held-for-voice-review.md.`);
+        showToast('Item placed on Hold.');
+      }
+    }
+  </script>
 </body>
 </html>
